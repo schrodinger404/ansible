@@ -1,0 +1,27 @@
+---
+# tasks file for setup-apache
+
+- name: install httpd on all managed node
+  yum:
+    name: httpd
+    state: installed
+  notify: Start service httpd, if not started
+
+- name: copy html to /www/html in the remote server
+  copy:
+    src: /opt/ansible/index.html
+    dest: /var/www/html
+
+- name: copy css to /www/html in the remote server
+  copy:
+    src: /opt/ansible/styles.css
+    dest: /var/www/html
+
+- name: change httpd port to {{port}}
+  ansible.builtin.lineinfile:
+    path: /etc/httpd/conf/httpd.conf
+    regexp: '^Listen '
+    insertafter: '^#Listen '
+    line: Listen {{port}}
+  notify: restart httpd
+
