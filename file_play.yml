@@ -1,0 +1,12 @@
+---
+- name: creating file
+  hosts: all
+  become: true
+  tasks:
+  - name: creating dummy  under home of ansadmin
+    file:
+      path: /home/ansadmin/dummy2
+      state: touch
+      owner: ansadmin
+      group: ansadmin
+      mode: '755'

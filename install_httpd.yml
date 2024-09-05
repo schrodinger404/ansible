@@ -1,0 +1,16 @@
+---
+- name: to install httpd
+  hosts: all
+  become: true
+  tasks:
+  - name: install httpd on all managed node
+    yum:
+      name: httpd
+      state: installed
+    notify: Start service httpd, if not started
+
+  handlers:
+  - name: Start service httpd, if not started
+    service:
+      name: httpd
+      state: started

@@ -1,0 +1,10 @@
+---
+- name : create user on all managed nodes
+  hosts: all
+  become: true
+  vars:
+    user: modi
+  tasks:
+    - name: creating user {{user}}
+      user: 
+        name: "{{user}}"

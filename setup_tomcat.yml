@@ -1,0 +1,33 @@
+---
+- name: setup tomcat on managed nodes
+  hosts: all
+  become: true
+  tasks:
+  - name: install java
+    yum:
+      name: java
+      state: installed
+
+  - name: download tomcat packages
+    get_url:
+      url: https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.93/bin/apache-tomcat-9.0.93.tar.gz
+      dest: /opt
+    
+  - name: unarchive the downloaded package
+    unarchive:
+      src: /opt/apache-tomcat-9.0.93.tar.gz
+      dest: /opt/
+      remote_src: yes
+  
+  - name: rename apache-tomcat-9.0.93 to tomcat
+    shell: "mv /opt/apache-tomcat-9.0.93 /opt/tomcat"
+  
+  - name: execution on strtup.sh
+    file:
+      path: /opt/tomcat/bin/startup.sh
+      mode: 0777
+
+  - name: start tomcat
+    shell: nohup ./startup.sh
+    args:
+      chdir: /opt/tomcat/bin/

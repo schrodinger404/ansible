@@ -1,0 +1,9 @@
+---
+- name: to install httpd
+  hosts: all
+  become: true
+  tasks:
+  - name: install httpd on amazon managed node
+    yum:
+      name: httpd
+      state: absent
